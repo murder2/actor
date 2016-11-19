@@ -1,0 +1,5 @@
+.gitignore
+
+export GOPATH
+
+: foreach *.go |> go build %f |> main

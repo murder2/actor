@@ -4,3 +4,4 @@ export GOPATH
 
 : foreach *.go |> go build %f |> %B
 : actor |> ./test_actor ./%f 192.168.43.99:8000 |>
+: client |> ./%f 192.168.43.99:8000 actor list |>

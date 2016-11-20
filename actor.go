@@ -41,6 +41,7 @@ func ActionTypeStringToActionType(t string) ActionType {
 
 type ActionPut struct {
 	Type		string `json:"type" binding:"required"`
+	Name		string `json:"name"`
 
 	SoundFile	string `json:"sound_file"`
 }
@@ -62,15 +63,26 @@ func config(c *gin.Context) {
 }
 
 
+var still_running bool
 func playSound(path string) {
+	if (still_running) {
+		return
+	}
+
+	still_running = true
+
 	cmd := exec.Command("mpv", path)
 
 	if err := cmd.Start(); err != nil {
 		log.Fatal(err)
+		still_running = false
 	}
 	if err := cmd.Wait(); err != nil {
 		log.Fatal(err)
+		still_running = false
 	}
+
+	still_running = false
 }
 
 func (a *Action) Put(c *gin.Context) {

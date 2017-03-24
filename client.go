@@ -13,17 +13,17 @@ import (
 )
 
 type LinkEventPost struct {
-	Major	int `type:"major"`
-	Minor	int `type:"minor"`
+	Major	int `json:"major"`
+	Minor	int `json:"minor"`
 }
 
 type LinkActionPost struct {
-	Actor	string `type:"actor"`
-	Id	int `type:"id"`
+	Actor	string `json:"actor"`
+	Id	int `json:"id"`
 }
 
 type LinkPost struct {
-	Event LinkEventPost `type:"event"`
+	Event LinkEventPost `json:"event"`
 	Action LinkActionPost `json:"action"`
 }
 
@@ -34,10 +34,11 @@ func linkAdd(args []string) {
 	}
 	major, _ := strconv.Atoi(major_minor[0])
 	minor, _ := strconv.Atoi(major_minor[1])
+	actor_id, _ := strconv.Atoi(args[1])
 
 	var link = LinkPost{
 		LinkEventPost{major, minor},
-		LinkActionPost{Actor: "", Id: 0},
+		LinkActionPost{Actor: "", Id: actor_id},
 	}
 	var dump []byte
 
@@ -51,7 +52,7 @@ func linkAdd(args []string) {
 
 func link(args []string) {
 	switch args[0] {
-	case "new": linkAdd(args[1:])
+	case "add": linkAdd(args[1:])
 	default:
 		panic("unknown cmd: " + args[2])
 	}
